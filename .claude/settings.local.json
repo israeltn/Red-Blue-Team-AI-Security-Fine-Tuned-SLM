@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m py_compile dataset/generate_dataset.py)",
+      "Bash(echo \"Exit code: $?\")"
+    ]
+  }
+}
