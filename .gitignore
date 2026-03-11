@@ -1,0 +1,29 @@
+# Credentials — never commit
+.env
+
+# Internal planning docs
+WORKPLAN.md
+CV_Tech_Nation_Global_Talent.md
+
+# Generated dataset (may contain sensitive security content)
+dataset/security_dataset.jsonl
+
+# Model files (too large for git)
+models/
+*.gguf
+*.bin
+*.safetensors
+
+# Training outputs
+outputs/
+security-slm-lora/
+security-slm-merged/
+security-slm/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Colab checkpoints
+checkpoint-*/

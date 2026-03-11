@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="1">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+
+    <!-- ══════════════════════════════════════════════ -->
+    <!-- TITLE BAR -->
+    <!-- ══════════════════════════════════════════════ -->
+    <mxCell id="title" value="Aegis-SLM — Edge-Deployable Reasoning Model for AI-Native Security Intelligence"
+      style="text;html=1;strokeColor=none;fillColor=#1a1a2e;fontColor=#ffffff;align=center;verticalAlign=middle;fontSize=16;fontStyle=1;rounded=1;arcSize=5;"
+      vertex="1" parent="1">
+      <mxGeometry x="40" y="20" width="1080" height="44" as="geometry" />
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════ -->
+    <!-- SWIMLANE: TRAINING PHASE -->
+    <!-- ══════════════════════════════════════════════ -->
+    <mxCell id="lane1" value="TRAINING PHASE — Google Colab T4 (15 GB VRAM)"
+      style="swimlane;startSize=30;fillColor=#f0f7ff;strokeColor=#6c8ebf;fontStyle=1;fontSize=11;fontColor=#1a3a6e;"
+      vertex="1" parent="1">
+      <mxGeometry x="40" y="80" width="740" height="230" as="geometry" />
+    </mxCell>
+
+    <!-- Base Model node -->
+    <mxCell id="n1" value="&lt;b style='font-size:13px'&gt;🤖 Base Model&lt;/b&gt;&lt;br&gt;DeepSeek-R1-Distill-Qwen-1.5B&lt;br&gt;&lt;font color='#0050ef'&gt;Preserves &amp;lt;think&amp;gt; reasoning chains&lt;/font&gt;"
+      style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;arcSize=12;verticalAlign=middle;"
+      vertex="1" parent="lane1">
+      <mxGeometry x="20" y="60" width="190" height="80" as="geometry" />
+    </mxCell>
+
+    <!-- Arrow n1 → n2 -->
+    <mxCell id="a1" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#6c8ebf;strokeWidth=2;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" source="n1" target="n2" parent="lane1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- LoRA Fine-Tuning node -->
+    <mxCell id="n2" value="&lt;b style='font-size:13px'&gt;⚡ LoRA Fine-Tuning&lt;/b&gt;&lt;br&gt;Unsloth · r=16 · 4-bit (bitsandbytes)&lt;br&gt;7 projection layers: q/k/v/o/gate/up/down&lt;br&gt;&lt;font color='#006600'&gt;Modifies ~1% of parameters&lt;/font&gt;"
+      style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;arcSize=12;"
+      vertex="1" parent="lane1">
+      <mxGeometry x="260" y="50" width="200" height="100" as="geometry" />
+    </mxCell>
+
+    <!-- Arrow n2 → n3 -->
+    <mxCell id="a2" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#82b366;strokeWidth=2;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" source="n2" target="n3" parent="lane1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- SFTTrainer node -->
+    <mxCell id="n3" value="&lt;b style='font-size:13px'&gt;📊 SFTTrainer&lt;/b&gt;&lt;br&gt;3 epochs · LR 2e-4 · adamw_8bit&lt;br&gt;Checkpoint every 25 steps&lt;br&gt;WandB logging (loss + GPU util)"
+      style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;arcSize=12;"
+      vertex="1" parent="lane1">
+      <mxGeometry x="510" y="50" width="200" height="100" as="geometry" />
+    </mxCell>
+
+    <!-- Security Dataset feed -->
+    <mxCell id="ds" value="&lt;b&gt;🗂 Security Dataset&lt;/b&gt;&lt;br&gt;20 JSONL samples&lt;br&gt;10 Red + 10 Blue pairs&lt;br&gt;&lt;font color='#0050ef'&gt;&amp;lt;think&amp;gt; blocks enforced&lt;/font&gt;"
+      style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;arcSize=12;"
+      vertex="1" parent="lane1">
+      <mxGeometry x="260" y="165" width="200" height="52" as="geometry" />
+    </mxCell>
+
+    <!-- Dataset → SFTTrainer -->
+    <mxCell id="ads" value="feeds" style="dashed=1;strokeColor=#d79b00;endArrow=openThin;endFill=0;fontSize=9;" edge="1" source="ds" target="n3" parent="lane1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════ -->
+    <!-- SWIMLANE: EXPORT & STORAGE -->
+    <!-- ══════════════════════════════════════════════ -->
+    <mxCell id="lane2" value="EXPORT &amp; STORAGE"
+      style="swimlane;startSize=30;fillColor=#fffde7;strokeColor=#d6b656;fontStyle=1;fontSize=11;fontColor=#7a5c00;"
+      vertex="1" parent="1">
+      <mxGeometry x="40" y="325" width="740" height="160" as="geometry" />
+    </mxCell>
+
+    <!-- LoRA Adapter -->
+    <mxCell id="n4" value="&lt;b style='font-size:13px'&gt;💾 LoRA Adapter&lt;/b&gt;&lt;br&gt;~30 MB · Crash-safe backup&lt;br&gt;Pushed to HuggingFace Hub first"
+      style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;direction=south;"
+      vertex="1" parent="lane2">
+      <mxGeometry x="20" y="45" width="180" height="90" as="geometry" />
+    </mxCell>
+
+    <!-- GGUF Export -->
+    <mxCell id="n5" value="&lt;b style='font-size:13px'&gt;📦 GGUF Q4_K_M Export&lt;/b&gt;&lt;br&gt;~1.2 GB · ~99% quality retention&lt;br&gt;Golden ratio for 1.5B models"
+      style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;arcSize=12;"
+      vertex="1" parent="lane2">
+      <mxGeometry x="260" y="50" width="200" height="80" as="geometry" />
+    </mxCell>
+
+    <!-- HuggingFace Hub -->
+    <mxCell id="n6" value="&lt;b style='font-size:13px'&gt;☁️ HuggingFace Hub&lt;/b&gt;&lt;br&gt;LoRA adapter + GGUF + eval JSONs&lt;br&gt;Private repo · Persistent storage"
+      style="shape=mxgraph.cisco.sites.generic_building;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;pointerEvents=1;"
+      vertex="1" parent="lane2">
+      <mxGeometry x="510" y="40" width="200" height="100" as="geometry" />
+    </mxCell>
+
+    <!-- Arrows inside lane2 -->
+    <mxCell id="a3" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#d6b656;strokeWidth=2;" edge="1" source="n4" target="n5" parent="lane2">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="a4" value="push" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#d6b656;strokeWidth=2;" edge="1" source="n5" target="n6" parent="lane2">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Cross-lane arrows: SFTTrainer → LoRA Adapter -->
+    <mxCell id="ac1" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#d6b656;strokeWidth=2;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="n3" target="n4" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════ -->
+    <!-- SWIMLANE: DEPLOYMENT -->
+    <!-- ══════════════════════════════════════════════ -->
+    <mxCell id="lane3" value="DEPLOYMENT — 4 GB RAM · CPU-only · No GPU Required"
+      style="swimlane;startSize=30;fillColor=#ffeef0;strokeColor=#b85450;fontStyle=1;fontSize=11;fontColor=#7a1a1a;"
+      vertex="1" parent="1">
+      <mxGeometry x="40" y="500" width="740" height="150" as="geometry" />
+    </mxCell>
+
+    <!-- Pull from HF -->
+    <mxCell id="n7" value="&lt;b&gt;⬇️ Pull GGUF&lt;/b&gt;&lt;br&gt;ollama pull hf.co/...&lt;br&gt;or huggingface-cli download"
+      style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;arcSize=12;"
+      vertex="1" parent="lane3">
+      <mxGeometry x="20" y="50" width="180" height="75" as="geometry" />
+    </mxCell>
+
+    <!-- Local Inference -->
+    <mxCell id="n8" value="&lt;b style='font-size:13px'&gt;💻 Ollama / llama.cpp&lt;/b&gt;&lt;br&gt;Security system prompt · temp 0.3 · ctx 2048&lt;br&gt;&lt;font color='#cc0000'&gt;Aegis-SLM: Live on 4 GB RAM&lt;/font&gt;"
+      style="shape=mxgraph.cisco.computers_and_peripherals.pc;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;"
+      vertex="1" parent="lane3">
+      <mxGeometry x="260" y="35" width="200" height="100" as="geometry" />
+    </mxCell>
+
+    <!-- Evaluation -->
+    <mxCell id="n9" value="&lt;b style='font-size:13px'&gt;📋 Evaluation&lt;/b&gt;&lt;br&gt;5 prompts · Pre vs Post scoring&lt;br&gt;&lt;think&gt; rate: 90–100% target&lt;br&gt;Avg score: 7–9 / 10"
+      style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;arcSize=12;"
+      vertex="1" parent="lane3">
+      <mxGeometry x="510" y="40" width="200" height="90" as="geometry" />
+    </mxCell>
+
+    <!-- Arrows in lane3 -->
+    <mxCell id="a5" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#b85450;strokeWidth=2;" edge="1" source="n7" target="n8" parent="lane3">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="a6" value="test" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#b85450;strokeWidth=2;" edge="1" source="n8" target="n9" parent="lane3">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Cross-lane: HF Hub → Pull GGUF -->
+    <mxCell id="ac2" value="pull" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#b85450;strokeWidth=2;dashed=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" source="n6" target="n7" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════ -->
+    <!-- RIGHT PANEL: SECURITY COVERAGE -->
+    <!-- ══════════════════════════════════════════════ -->
+
+    <!-- Red Team Box -->
+    <mxCell id="red" value="&lt;b style='font-size:12px'&gt;🔴 RED TEAM — Attack Scenarios&lt;/b&gt;&lt;br&gt;&lt;br&gt;▸ MCP Tool Poisoning → ENV Exfiltration&lt;br&gt;▸ Crescendo 6-Turn Jailbreak&lt;br&gt;▸ Agent Lateral Movement (Search→Email)&lt;br&gt;▸ LLM SSRF → AWS Metadata Theft&lt;br&gt;▸ Base64 + Unicode Guardrail Bypass&lt;br&gt;▸ RAG System Prompt Injection&lt;br&gt;▸ Recursive Tool-Call Exhaustion"
+      style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff0f0;strokeColor=#b85450;fontSize=10;arcSize=8;align=left;spacingLeft=10;verticalAlign=top;strokeWidth=2;"
+      vertex="1" parent="1">
+      <mxGeometry x="800" y="80" width="320" height="200" as="geometry" />
+    </mxCell>
+
+    <!-- Blue Team Box -->
+    <mxCell id="blue" value="&lt;b style='font-size:12px'&gt;🔵 BLUE TEAM — Defence Countermeasures&lt;/b&gt;&lt;br&gt;&lt;br&gt;▸ MCP Tool-Call Validation Schema&lt;br&gt;▸ Cross-Turn Intent Tracking (LlamaGuard)&lt;br&gt;▸ Inter-Tool Permission Boundary Enforcement&lt;br&gt;▸ AWS IAM Least-Privilege + CloudTrail Lambda&lt;br&gt;▸ Pre-Guardrail Input Normalisation Pipeline&lt;br&gt;▸ Training Data Integrity + Loss Spike Monitor&lt;br&gt;▸ Token Budget + HITL Circuit Breaker"
+      style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0f5ff;strokeColor=#6c8ebf;fontSize=10;arcSize=8;align=left;spacingLeft=10;verticalAlign=top;strokeWidth=2;"
+      vertex="1" parent="1">
+      <mxGeometry x="800" y="295" width="320" height="200" as="geometry" />
+    </mxCell>
+
+    <!-- Key Metrics Box -->
+    <mxCell id="metrics" value="&lt;b style='font-size:12px'&gt;📐 Key Technical Metrics&lt;/b&gt;&lt;br&gt;&lt;br&gt;RAM at inference:  ~1.2 GB&lt;br&gt;Quality retention:  ~99% vs full model&lt;br&gt;Parameters modified:  ~1% (LoRA)&lt;br&gt;CPU latency:  &lt;60s / 200 tokens&lt;br&gt;Training VRAM:  &lt;3 GB (4-bit)&lt;br&gt;Training time:  ~30 min (Colab T4)"
+      style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=10;arcSize=8;align=left;spacingLeft=10;verticalAlign=top;"
+      vertex="1" parent="1">
+      <mxGeometry x="800" y="510" width="320" height="170" as="geometry" />
+    </mxCell>
+
+    <!-- Innovation callout -->
+    <mxCell id="innov" value="&lt;b style='font-size:11px; color:#0050ef'&gt;🧠 Key Innovation&lt;/b&gt;&lt;br&gt;Reasoning-preserving fine-tuning:&lt;br&gt;all 7 projection layers targeted&lt;br&gt;(not attention-only — standard approach)&lt;br&gt;&lt;b&gt;First edge-deployable&lt;br&gt;security reasoning SLM&lt;/b&gt;"
+      style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#0050ef;fontSize=10;arcSize=8;strokeWidth=2;verticalAlign=top;align=center;"
+      vertex="1" parent="1">
+      <mxGeometry x="800" y="695" width="320" height="120" as="geometry" />
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════ -->
+    <!-- FOOTER -->
+    <!-- ══════════════════════════════════════════════ -->
+    <mxCell id="footer" value="Stack: DeepSeek-R1-Distill-Qwen-1.5B  ·  Unsloth  ·  LoRA (r=16)  ·  bitsandbytes  ·  TRL SFTTrainer  ·  GGUF Q4_K_M  ·  Ollama  ·  llama.cpp  ·  WandB  ·  HuggingFace Hub"
+      style="text;html=1;strokeColor=#cccccc;fillColor=#f5f5f5;align=center;fontSize=9;fontColor=#666666;rounded=1;verticalAlign=middle;"
+      vertex="1" parent="1">
+      <mxGeometry x="40" y="668" width="740" height="28" as="geometry" />
+    </mxCell>
+
+  </root>
+</mxGraphModel>
