@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3:*)",
+      "Bash(pdflatex --version)",
+      "Bash(where latexmk:*)",
+      "Bash(where xelatex:*)",
+      "Bash(where lualatex:*)"
+    ]
+  }
+}
